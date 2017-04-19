@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>YKWAN CLOCK</title>
+        <script type="text/javascript" src="./main.js"></script>
+        <style>
+            .time-item{
+                float:left;
+                margin-left:10px;
+            }
+            .row-item{
+                float: left;
+                width: 30px;
+                height: 30px;
+                transform: scale(0.7);
+                background-color: rgb(243, 243, 243);
+                -webkit-transition: all .8s cubic-bezier(0, 0.85, 0.5, 1);
+            }
+            .row-item.active{
+                box-shadow: 0 0 2px 1px red;
+                transform: scale(1);
+                background-color: red;
+            }
+
+            
+        </style>
+    </head>
+    <body onload="Main.init()">
+        <div id="main"></div>
+        
+    </body>
+</html>
