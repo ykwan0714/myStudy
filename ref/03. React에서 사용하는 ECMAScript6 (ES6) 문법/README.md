@@ -272,7 +272,7 @@ multiply(undefined, 2);     // (2) TDZ 발생!
 
 ## 7. 보다 강력해진 Object literal
 
-###7-1. Property value shorthand
+### 7-1. Property value shorthand
 
 Object의 key와 value가 동일한 경우, key를 생략할 수 있다.
 
@@ -287,7 +287,7 @@ function getCar(make, model, value) {
 console.log(getCar('Hyundai', 'Sonata', 3000)) // (1)
 ```
 
-###7-2. Computed property keys
+### 7-2. Computed property keys
 
 Object의 key 값에 표현식을 지정할 수 있다.
 
@@ -300,7 +300,7 @@ function getCar(make, model, value) {
 console.log(getCar('Hyundai')); // (1)
 ```
 
-###7-3. Method definition shorthand
+### 7-3. Method definition shorthand
 
 Method 명 뒤에 `funcion :` 키워드를 생략할 수 있다. prototype은 존재하지 않는다.
 
@@ -315,7 +315,7 @@ function getCar(make, model, value) {
 console.log(getCar('Hyundai', 'Sonata', 3000)) // (1)
 ```
 
-###7-4. Obejct.assign
+### 7-4. Obejct.assign
 
 [Object.assign()](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) 사용하면 Object의 얕은 복사를 수행한다.
 
@@ -328,7 +328,7 @@ const copiedObj = Object.assign({}, orgObj, { b: { f: 7, g: 8 } });
 console.log(copiedObj);   // (1)
 ```
 
-###8. Destructuring Assignment
+### 8. Destructuring Assignment
 
 Array 또는 Object의 데이터를 별개의 변수로 추출해 준다.
 
@@ -353,7 +353,7 @@ var [a, , b] = [1, 2, 3];
 console.log(a, b); // (3)
 ```
 
-###9. Template literals
+### 9. Template literals
 
 큰따옴표(") 나, 작은 따옴표(') 대신 back-tick (`)을 이용하여 string을 감싼다.
 먼저 줄 바꿈은 아래와 같이 표현할 수 있다.
@@ -382,7 +382,7 @@ var d = 10;
 console.log("Fifteen is " + (a + b) + " and\nnot " + (2 * a + b) + ".");
 ```
 
-##10. Class
+## 10. Class
 
 ES5에서 객체지향으로 구현하기 위해선 function을 생성자로 사용하여 매우 복잡 했지만, ES6에선 Class 키워드로 쉽게 구현할 수 있다.
 
