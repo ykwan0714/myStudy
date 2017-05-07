@@ -56,7 +56,7 @@ $ webapck --watch
 
 ## Bundling
 
-사진
+![사진1](https://github.com/ykwan0714/myStudy/blob/master/ref/02.%20webpack/01.png)
 
 webpack은 공식적으로 모듈 번들러이다. 동작시키는 방법은 하나의 파일을 진입점(entry point)으로 지정하는 것이다. 진입점이 된 파일은 Tree의 root가 된다. 그러면 매번 `require`에 의해 참조된 다른 파일이 트리에 추가 된다.  그 후 webpack 명령을 실행하면, 모든 파일과 모듈은 하나의 파일에 번들되어 제공된다.
 
@@ -64,7 +64,7 @@ webpack은 공식적으로 모듈 번들러이다. 동작시키는 방법은 하
 
 **예제**
 
-사진
+![사진2](https://github.com/ykwan0714/myStudy/blob/master/ref/02.%20webpack/02.png)
 
 위의 사진은 아래와 같은 구조를 가지고 있다.
 
