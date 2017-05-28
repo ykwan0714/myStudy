@@ -1,9 +1,13 @@
 {
   "name": "react-todo",
-  "author": "gomugom",
+  "author": "yongkwan",
   "description": "React Todo App",
   "license": "MIT",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ykwan0714/myStudy.git"
+  },
   "scripts": {
     "start": "node ./server.js"
   },
