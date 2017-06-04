@@ -24,12 +24,19 @@ class App extends React.Component {
 					contents : '오늘 할 일3',
 					isDone : false
 				}
-			]
+			],
+			editingId : null,
+			filterName : 'All'
 		}
 		this.toggleTodo = this.toggleTodo.bind(this);
 		this.toggleAll = this.toggleAll.bind(this);
 		this.deleteTodo = this.deleteTodo.bind(this);
 		this.addTodo = this.addTodo.bind(this);
+		this.editTodo = this.editTodo.bind(this);
+		this.cancelEdit = this.cancelEdit.bind(this);
+		this.saveTodo = this.saveTodo.bind(this);
+		this.selectFilter = this.selectFilter.bind(this);
+		this.clearComplete = this.clearComplete.bind(this);
 	}
 
 	/* todo를 toggle하는 function */
@@ -47,40 +54,15 @@ class App extends React.Component {
 	/* 전부 체크일 때 전부 해제, 그 외에엔 모두 체크 하는 functon*/
 	toggleAll(){
 
-		const activate = this.state.todos.some(elem=>!elem.isDone); // isDone이 false->true 그 반대도 되야한다.
 		const todos = [...this.state.todos];
+		const activate = todos.some(elem=>!elem.isDone); // isDone이 false->true 그 반대도 되야한다.
 		this.setState({
-				todos : todos.map((elem, index)=>{
+				todos : todos.map((elem, idx)=>{
 					return Object.assign({},elem,{
 						isDone : activate
 					})
 				})
 		});
-		/*const isAllActivate = todos.every(elem=>elem.isDone); // 모두 true면 true
-		if(isAllActivate){ // 모두 해제
-			const newTodos = todos.map((elem, index)=>{
-				return Object.assign({},elem,{
-					isDone : false
-				})
-			});
-			//newTodos.isChecked = false;
-			this.setState({
-				todos : newTodos,
-				isChecked : false
-			});
-		}else{ // 모두 선택
-			const newTodos = todos.map((elem, index)=>{
-				return Object.assign({},elem,{
-					isDone : true
-				})
-			});
-			//newTodos.isChecked = true;
-			this.setState({
-				todos : newTodos,
-				isChecked : true
-			});
-		}*/
-
 
 	};
 	/* todo를 delete하는 function */
@@ -95,29 +77,70 @@ class App extends React.Component {
 	}
 	/* todo를 add하는 function */
 	addTodo(contents){
-		/*
-		const todo = {
-			id : this.state.todos.length,
-			contents : contents,
-			isDone : false
-		};
-		const newTodos = [...this.state.todos, todo];
-		*/
+
 		this.setState({
 			todos :
 			[
 				...this.state.todos,
 				{
-					id : this.state.todos.length,
+					id : new Date(),
 					contents : contents,
 					isDone : false
 				}
 			]
 		});
-
-
 	}
+	/* todo를 edit 모드로 변경하는 function */
+	editTodo(id){
+		this.setState({
+			editingId : id
+		});
+	}
+	/* todo의 edit 모드를 해제하는 function */
+	cancelEdit(){
+		this.setState({
+			editingId : null
+		});
+	}
+	/* 새로운 todo를 추가하는 function */
+	saveTodo(id, newContents){
+		const newTodos = [...this.state.todos];
+		const saveIndex = newTodos.findIndex(elem=>elem['id'] == id);
+		newTodos[saveIndex] = Object.assign({}, newTodos[saveIndex], {
+			contents : newContents
+		});
+		this.setState({
+			todos : newTodos,
+			editingId : null
+		});
+	}
+	/* 선택된 filter이름을 변경하는 function */
+	selectFilter(filterName){
+		this.setState({
+			filterName : filterName
+		})
+	}
+	/* 완료한 todo를 filtering하여 없애는 function */
+	clearComplete(){
+		const newTodos = this.state.todos.filter(elem=>!elem.isDone);
+		this.setState({
+			todos : newTodos
+		})
+	}
+
 	render() {
+		// 활성화 된 todo를 filtering 한다.
+		const filterTodos = (this.state.filterName == 'All' ? this.state.todos :
+			this.state.todos.filter(elem=>(
+				(this.state.filterName == 'Active' && !elem.isDone) ||
+				(this.state.filterName == 'Completed' && elem.isDone)
+			))
+		);
+
+		// 활성화 된 todo의 length를 계
+		const activeLength = filterTodos.filter(elem=>!elem.isDone).length;
+		// 완료된 todo가 존재하는지 확인
+		const hasComplete = filterTodos.some(elem=>elem.isDone);
 
 		return(
 			<div className='todo-app'>
@@ -127,11 +150,21 @@ class App extends React.Component {
 					isChecked={this.state.todos.every(elem=>elem.isDone)}
 				/>
 				<TodoList
-					todos = {this.state.todos}
+					todos = {filterTodos}
 					toggleTodo = {this.toggleTodo}
 					deleteTodo = {this.deleteTodo}
+					editTodo = {this.editTodo}
+					editingId = {this.state.editingId}
+					cancelEdit = {this.cancelEdit}
+					saveTodo = {this.saveTodo}
 				/>
-				<Footer/>
+				<Footer
+					activeLength = {activeLength}
+					filterName = {this.state.filterName}
+					selectFilter = {this.selectFilter}
+					clearComplete = {this.clearComplete}
+					hasComplete = {hasComplete}
+				/>
 			</div>
 		);
 	}
