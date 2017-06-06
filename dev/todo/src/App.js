@@ -1,30 +1,20 @@
 import React from 'react';
+import axios from 'axios'; //axios 추가
 
 import Header from './Header';
 import TodoList from './TodoList';
 import Footer from './Footer';
 
+/* axios 인스턴스를 생성하여 반복을 줄인다. */
+const ax = axios.create({
+	baseURL : 'http://localhost:2403/todos'
+});
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			todos : [
-				{
-					id : 0,
-					contents : '오늘 할 일1',
-					isDone : true
-				},
-				{
-					id : 1,
-					contents : '오늘 할 일2',
-					isDone : false
-				},
-				{
-					id : 2,
-					contents : '오늘 할 일3',
-					isDone : false
-				}
-			],
+			todos : [],
 			editingId : null,
 			filterName : 'All'
 		}
@@ -39,29 +29,45 @@ class App extends React.Component {
 		this.clearComplete = this.clearComplete.bind(this);
 	}
 
+	/* 컴포넌트가 마운트 되기전 실행되는 componentWillMount를 통해 todos를 수신한다. (최초 렌더링 직전)*/
+	componentWillMount(){
+		ax.get('/')
+			.then(res=>{
+				this.setState({
+					todos : res.data
+				})
+			});
+	}
+
 	/* todo를 toggle하는 function */
 	toggleTodo(id){
 		const newTodos = [...this.state.todos];
 		const editIndex = newTodos.findIndex(elem=>elem['id']==id);
-		newTodos[editIndex] = Object.assign({}, newTodos[editIndex],{
-			isDone : !newTodos[editIndex].isDone
-		});
 
-		this.setState({
-			todos : newTodos
-		});
+		ax.put(`/${id}`, {isDone : !newTodos[editIndex].isDone})
+			.then(res=>{
+				newTodos[editIndex] = res.data;
+				this.setState({
+					todos : newTodos
+				});
+			});
+
+
 	}
 	/* 전부 체크일 때 전부 해제, 그 외에엔 모두 체크 하는 functon*/
 	toggleAll(){
-
 		const todos = [...this.state.todos];
 		const activate = todos.some(elem=>!elem.isDone); // isDone이 false->true 그 반대도 되야한다.
-		this.setState({
-				todos : todos.map((elem, idx)=>{
-					return Object.assign({},elem,{
-						isDone : activate
-					})
-				})
+		const axArr = todos.map(elem=>{
+			return ax.put(`/${elem.id}`, {isDone : activate})
+		}); //axArr = [ax.put(...) , ax.put(...), ...]
+
+		axios.all(axArr).then(res=>{
+			// res는 [res, res, res, ...] 의 형태
+			const newTodos = res.map(elem=>elem.data);
+			this.setState({
+				todos : newTodos
+			});
 		});
 
 	};
@@ -69,26 +75,27 @@ class App extends React.Component {
 	deleteTodo(id){
 		const newTodos = [...this.state.todos];
 		const deleteIndex = newTodos.findIndex(elem=>elem['id']==id);
-		newTodos.splice(deleteIndex,1);
 
-		this.setState({
-			todos : newTodos
-		});
+		ax.delete(`/${id}`)
+			.then(res=>{
+				newTodos.splice(deleteIndex,1);
+				this.setState({
+					todos : newTodos
+				});
+			});
 	}
 	/* todo를 add하는 function */
 	addTodo(contents){
-
-		this.setState({
-			todos :
-			[
-				...this.state.todos,
-				{
-					id : new Date(),
-					contents : contents,
-					isDone : false
-				}
-			]
-		});
+		ax.post('/', { contents : contents})
+			.then(res=>{
+				this.setState({
+					todos :
+					[
+						...this.state.todos,
+						res.data
+					]
+				});
+			});
 	}
 	/* todo를 edit 모드로 변경하는 function */
 	editTodo(id){
@@ -102,17 +109,20 @@ class App extends React.Component {
 			editingId : null
 		});
 	}
-	/* 새로운 todo를 추가하는 function */
+	/* 변경된 todo를 저장하는 function */
 	saveTodo(id, newContents){
 		const newTodos = [...this.state.todos];
 		const saveIndex = newTodos.findIndex(elem=>elem['id'] == id);
-		newTodos[saveIndex] = Object.assign({}, newTodos[saveIndex], {
-			contents : newContents
-		});
-		this.setState({
-			todos : newTodos,
-			editingId : null
-		});
+
+		ax.put(`/${id}`, {contents : newContents})
+			.then(res=>{
+				newTodos[saveIndex] = res.data;
+				this.setState({
+					todos : newTodos,
+					editingId : null
+				});
+			});
+
 	}
 	/* 선택된 filter이름을 변경하는 function */
 	selectFilter(filterName){
@@ -122,10 +132,18 @@ class App extends React.Component {
 	}
 	/* 완료한 todo를 filtering하여 없애는 function */
 	clearComplete(){
-		const newTodos = this.state.todos.filter(elem=>!elem.isDone);
-		this.setState({
-			todos : newTodos
-		})
+
+		const axArr = this.state.todos
+					.filter(elem=>elem.isDone)
+					.map(elem=> ax.delete(`/${elem.id}`));
+		axios.all(axArr)
+			.then(()=>{
+				const newTodos = this.state.todos.filter(elem=>!elem.isDone);
+				this.setState({
+					todos : newTodos
+				});
+			});
+
 	}
 
 	render() {
