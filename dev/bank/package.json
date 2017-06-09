@@ -1,0 +1,32 @@
+{
+	"name": "react-bank",
+	"author": "yongkwan",
+	"description": "React Bank App",
+	"license": "MIT",
+	"version": "1.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ykwan0714/myStudy.git"
+	},
+	"scripts": {
+		"start": "node ./server.js"
+	},
+	"devDependencies": {
+		"babel-core": "^6.24.0",
+		"babel-loader": "^6.4.1",
+		"babel-preset-latest": "^6.24.0",
+		"babel-preset-react": "^6.23.0",
+		"babel-preset-stage-1": "^6.22.0",
+		"react": "^15.4.2",
+		"react-dom": "^15.4.2",
+		"react-hot-loader": "^3.0.0-beta.6",
+		"react-transform-catch-errors": "^1.0.2",
+		"react-transform-hmr": "^1.0.4",
+		"webpack": "^2.3.2",
+		"webpack-dev-server": "^2.4.2",
+		"webpack-hot-middleware": "^2.17.1"
+	},
+	"dependencies": {
+		"classnames": "^2.2.5"
+	}
+}
