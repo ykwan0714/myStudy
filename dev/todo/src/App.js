@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios'; //axios 추가
+import update from 'immutability-helper'; // immutability-helper 추가
 
 import Header from './Header';
 import TodoList from './TodoList';
@@ -78,22 +79,20 @@ class App extends React.Component {
 
 		ax.delete(`/${id}`)
 			.then(res=>{
-				newTodos.splice(deleteIndex,1);
+				// apply immutability-helper
 				this.setState({
-					todos : newTodos
+					todos : update(newTodos,{$splice:[[deleteIndex, 1]]})
 				});
 			});
 	}
 	/* todo를 add하는 function */
 	addTodo(contents){
+		console.log('addTodo')
 		ax.post('/', { contents : contents})
 			.then(res=>{
+				// apply immutability-helper
 				this.setState({
-					todos :
-					[
-						...this.state.todos,
-						res.data
-					]
+					todos : update(this.state.todos, {$push : [res.data]})
 				});
 			});
 	}

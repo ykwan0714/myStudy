@@ -60,8 +60,8 @@ ajax 통신은 [aixos](https://github.com/mzabriskie/axios>) 사용 하였다.
 ```javascript
 // axios.all을 통해 여러개의 requset를 한번에 처리
 const axArr = this.state.todos
-					.filter(elem=>elem.isDone)
-					.map(elem=> ax.delete(`/${elem.id}`));
+				.filter(elem=>elem.isDone)
+				.map(elem=> ax.delete(`/${elem.id}`));
 		axios.all(axArr)
 			.then(()=>{
 				const newTodos = this.state.todos.filter(elem=>!elem.isDone);
@@ -130,4 +130,15 @@ https://github.com/mzabriskie/axios
 
 ```bash
 $ npm i -S axios
+```
+
+## 4. 2017-06-10 (commit : '170610 /dev/todo commit')
+
+[Immutability Helper](https://github.com/kolodny/immutability-helper) 적용
+
+ * addTodo
+ * deleteTodo
+
+```bash
+$ npm i -S immutability-helper
 ```
