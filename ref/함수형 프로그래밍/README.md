@@ -80,7 +80,7 @@ console.log(obj2.val);
 > * 함수를 런타임에서 언제나 정의 할 수 있다.
 > * 함수를 인자로 전달 할 수 있다.
  
-```
+```javascript
 // 값을 변수에 저장할 수 있다.
 var f1 = function(a) { return a * a; }
 console.log(f1);
