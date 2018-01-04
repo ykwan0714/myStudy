@@ -409,3 +409,38 @@ class SUV extends Car {
 let suv = new SUV('My Car');
 console.log(suv.getName());  // (2)
 ```
+
+## 11. Promise
+
+[Promise](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+프로미스는 비동기 동작이 종료된 이후의 결과 값이나 실패 이유를 처리하기 위한 handler를 연결할 수 있도록 해준다.
+
+프로미스는 다음 중 하나의 상태값을 가진다.
+
+> * pending : 초기 / 대기 상태
+> * fuliflled : 연산의 성공
+> * rejected : 연산의 실패
+
+
+``` javascript
+// 프로미스 구현
+var promise = new Promise(function(resolve, reject) {
+  // do a thing, possibly async, then…
+
+  if (/* everything turned out fine */) {
+    resolve("Stuff worked!");
+  }
+  else {
+    reject(Error("It broke"));
+  }
+});
+
+// 프로미스 사용
+promise.then(function(result) {
+  console.log(result); // "Stuff worked!"
+}, function(err) {
+  console.log(err); // Error: "It broke"
+});
+
+```
