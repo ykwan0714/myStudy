@@ -1,6 +1,8 @@
 해당 문서는 Vue.js 공식 가이드 문서를 참고하여 요약해 놓은 문서입니다.  
 자세한 내용은 [Vue.js 배우기](https://kr.vuejs.org/v2/guide/) 참고 하세요.
 
+# Vue.js
+
 ## 시작하기
 
 단순히 `index.html` 파일을 만들고 Vue를 아래와 같이 포함할 수 있다.
@@ -608,6 +610,8 @@ new Vue({
 
 
 ### Props
+
+![props](https://github.com/ykwan0714/myStudy/blob/master/ref/Vue.js/props-events.png?raw=true)
 
 Vue.js에서 부모-자식 컴포넌트 관계는 **props는 아래**로 **events는 위로** 전달된다. 부모는 **props**를 통해 자식에게 데이터를 전달하고, 자식은 **events**를 통해 부모에게 메시지를 보낸다.
 
