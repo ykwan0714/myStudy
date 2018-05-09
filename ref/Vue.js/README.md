@@ -42,6 +42,52 @@ Vue 인스턴스를 생성할 때에는 options 객체를 전달해야 한다. �
 
 ## 템플릿 문법
 
+
+### 데이터 바인딩
+
+데이터 바인딩은 HTML 화면 요소를 뷰 인스턴스의 데이터와 연결하는 것을 의미한다. 주요 문법으로는 `{{ }}`과 `v-bind` 속성이 있다.
+
+#### {{ }} - 콧수염 괄호
+
+```html
+<div id="example">
+  <!-- 콧수염 괄호 -->
+  <span>메시지: {{ message }}</span>
+</div>
+
+```
+```javascript
+var app = new Vue({
+  el: '#example',
+  data: {
+    message: '안녕하세요'
+  }
+})
+```
+
+#### v-bind
+
+v-bind는 HTML 속성 값에 뷰 데이터 값에 데이터 값을 연결할 때 사용하는 데이터 연결 방식이다. 사용 방법은 v-bind 속성으로 지정할 HTML 속성이나 props 속성 앞에 접두사로 붙여준다.
+
+```html
+<div id="example">
+  <p v-bind:id="idA">아이디 바인딩</p>
+  <p v-bind:class="classA">클래스 바인딩</p>
+  <p v-bind:style="styleA">스타일 바인딩</p>
+</div>
+
+```
+```javascript
+var app = new Vue({
+  el: '#example',
+  data: {
+    idA: 10,
+    classA: 'container',
+    styleA: 'color:blue'
+  }
+})
+```
+
 [자세히 보기](https://kr.vuejs.org/v2/guide/syntax.html)
 
 ## Computed Attribute
@@ -581,6 +627,10 @@ new Vue({
 </div>
 ```
 
+> 전역 컴포넌트와 지역 컴포넌트의 차이   
+> 전역 컴포넌트는 인스턴스를 새로 생성할 때 마다 인스턴스에 components 속성을 등록할 필요 없이 한번 등록하면 언제든지 사용할 수 있다.   
+> 반면에 지역 컴포넌트는 새 인스턴스를 생성할 때 마다 등록해 주어야한다.
+
 **컴포넌트에서 data는 반드시 함수여야한다.** 객체로 정의할 경우 생성된 모든 인스턴스에 동일한 객체가 참조로 공유된다. 함수로 정의함으로써 새로운 인스턴스가 생성될 때마다 호출하여 초기 데이터의 새 복사본을 반환할 수 있다. 만약 함수로 사용하지 않을 경우 Vue는 경고를 출력한다. 아래와 같이 data는 함수로 사용하자.
 
 ```html
@@ -611,11 +661,15 @@ new Vue({
 
 ### Props
 
-![props](https://github.com/ykwan0714/myStudy/blob/master/ref/Vue.js/props-events.png?raw=true)
+모든 컴포넌트 인스턴스는 자체 스코프가 존재한다. 즉 자식 컴포넌트의 템플릿에서 부모 데이터를 직접 참조할 수 없다. 부모 컴포넌트의 데이터는 **props** 옵션을 사용하여 자식 컴포넌트로 전달하여 사용해야한다. 하위 컴포넌트에서는 `props` 옵션을 사용하여 받을 props를 선언해줘야한다.
 
+![props](https://github.com/ykwan0714/myStudy/blob/master/ref/Vue.js/props-events.png?raw=true)
+ 
 Vue.js에서 부모-자식 컴포넌트 관계는 **props는 아래**로 **events는 위로** 전달된다. 부모는 **props**를 통해 자식에게 데이터를 전달하고, 자식은 **events**를 통해 부모에게 메시지를 보낸다.
 
-모든 컴포넌트 인스턴스는 자체 스코프가 존재한다. 즉 자식 컴포넌트의 템플릿에서 부모 데이터를 직접 참조할 수 없다. 부모 컴포넌트의 데이터는 **props** 옵션을 사용하여 자식 컴포넌트로 전달하여 사용해야한다. 하위 컴포넌트에서는 `props` 옵션을 사용하여 받을 props를 선언해줘야한다.
+> amelCased prop을 사용한다면 HTML에서는 해당하는 kebab-case(하이픈)을 사용해야 한다.   
+> ex) prop name: parentMessage이면 html: parent-message 이다.
+
 
 ```html
 <div id="example">
@@ -644,5 +698,84 @@ new Vue({
 })
 
 ```
+
+### Events
+
+이벤트 발생과 수신은 $emit()과 v-on: 속성을 이용하여 구현한다. 
+
+```html
+<div id="example">
+  <!-- 이벤트 수신 -->
+  <child v-on:show-log="printText"></child> 
+</div>
+```
+```javascript
+Vue.component('child', {
+   template: '<button v-on:click="showLog">show</button>',
+   methods: {
+   		showLog: function(){
+   			this.$emit('show-log'); /* 이벤트 발생 */
+   		}
+   }
+})
+
+new Vue({
+  el: '#example',
+  data: {
+  	msg : '안녕하세요. 부모로 부터 전달된 메시지 입니다.'
+  },
+  methods: {
+  	printText: function() {
+  		console.log('이벤트를 전달 받았습니다.');
+  	}
+  }
+})
+
+```
+
+### 같은 레벨간 컴포넌트 통신
+
+ 컴포넌트 고유의 유효 범위 (scope) 때문에 같은 레벨간 컴포넌트 통신은 하위에서 공통 상위 컴포넌트로 이벤트를 전달한 후 공통 상위 컴포넌트에서 하위 컴포넌트에 props를 내려 보내야 한다. 이런 통신 방식은 상위 컴포넌트가 필요 없음에도 불구하고 같은 레벨 간에 통신하기 위해 강제로 상위 컴포넌트를 두어야 한다.
+
+### 같은 레벨간 컴포넌트 통신 - 이벤트 버스 
+
+이벤트 버스(Event Bus)는 개발자가 지저한 2개의 컴포넌트 간에 데이터를 주고 받을 수 있는 방법이다. 상위-하위 관계를 유지하고 있지 않아도 데이터를 한 컴포넌트에서 다른 컴포넌트로 전달할 수 있다.
+
+이벤트 버스를 구현하려면
+
+1. 새로운 인스턴스 생성
+2. 보내는 컴포넌트는 `.$emit` 구현
+3. 받는 컴포넌트는 `.$on` 구현
+
+
+```html
+<div id="example">
+  <!-- 이벤트 수신 -->
+  <child></child> 
+</div>
+```
+```javascript
+var eventBus = new Vue();  // 이벤트 버스를 위한 추가 인스턴스
+Vue.component('child', {
+   template: '<div>하위 컴포넌트 영역입니다.<button v-on:click="showLog">show</button></div>',
+   methods: {
+   		showLog: function(){
+   			eventBus.$emit('triggerEventBus', 100); /* 이벤트 발생 */
+   		}
+   }
+})
+
+new Vue({
+  el: '#example',
+  created: function(){
+  	eventBus.$on('triggerEventBus', function(value) {
+  		console.log('이벤트를 전달 받음. 전달 받은 값 :', value);
+  	});
+  }
+})
+
+```
+
+이벤트 버스를 활용하면 props속성을 이용하지 않고도 원하는 컴포넌트 간에 직접적으로 데이터를 전달할 수 있어서 편리하지만 컴포너넌트가 많아지면 관리가 되지 않는 문제점이 있다. Vuex(뷰엑스)라는 상태관리 도구가 필요하다.
 
 [자세히 보기](https://kr.vuejs.org/v2/guide/components.html)
