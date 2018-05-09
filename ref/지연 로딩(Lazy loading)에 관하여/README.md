@@ -5,7 +5,7 @@ Lazy Loading Images and Video](https://developers.google.com/web/fundamentals/pe
 
 **지연 로딩**은 페이지 로드 시 중요하지 않은 리소스 로딩을 지연시키는 기술이다. 대신 이러한 리소스는 필요할 때 로드 된다. 이미지에서 중요하지 않은 리소스는 때때로 `off-screen`과 동의어이다..Lighthouse를 사용하고 사용성 검토해 본 적이 있다면, [Offscreen Images 감사](https://developers.google.com/web/tools/lighthouse/audits/offscreen-images)의 형태로 이 영역에 대한 몇가지 지침을 확인해 보았을 것이다.
 
-
+![figure1](https://github.com/ykwan0714/myStudy/blob/master/ref/지연%20로딩(Lazy%20loading)에%20관하여/lazy-load-img-0.png?raw=true)
 
 **사진 1.** Lighthouse의 성능 감사 중 하나는 지연 로딩이 될 화면 이미지를 식별하는 것이다.  
 아마 이미 지연 로딩을 보았을 것이다.
@@ -16,7 +16,7 @@ Lazy Loading Images and Video](https://developers.google.com/web/fundamentals/pe
 
 이미지 지연 로딩의 예시는 인기 있는 게시 플랫폼 매체 [Medium](https://medium.com/)에서 볼 수 있다. Medium에서는 페이지 로드 시 저용량의 placeholder 이미지를 먼저 로드하고, 사용자가 해당 이미지로 스크롤 했을 때 최종 이미지로 대체한다.
 
-
+![figure2](https://github.com/ykwan0714/myStudy/blob/master/ref/지연%20로딩(Lazy%20loading)에%20관하여/lazy-load-img-1.jpg?raw=true)
 
 **사진 2.** 이미지 지연 로드의 예시. Medium에서는 페이지 로드 시 저용량의 placeholder 이미지를 먼저 로드하고(왼쪽), 사용자가 해당 이미지로 스크롤 했을 때 필요에 따라 최종 이미지가 로딩 된다.(오른쪽)
 
