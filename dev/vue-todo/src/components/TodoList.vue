@@ -1,35 +1,23 @@
 <template>
   <section>
-    <ul>
-      <li v-for="(todoItem, index) in todoItems" class="shadow">
+    <transition-group name="list" tag="ul">
+      <li v-for="(todoItem, index) in propsdata" class="shadow" v-bind:key="index">
         <i class="checkBtn fa fa-check" aria-hidden="true"></i>
         {{ todoItem }}
         <span class="removeBtn" type="button" v-on:click="removeTodo(todoItem, index)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </span>
       </li>
-    </ul>
+    </transition-group>
   </section>
 </template>
 
 <script>
   export default {
-    data() {
-      return {
-        todoItems: []
-      }
-    },
+    props: ['propsdata'],
     methods: {
       removeTodo(todoItem, index) {
-        localStorage.removeItem(todoItem);
-        this.todoItems.splice(index,1);
-      }
-    },
-    created() {
-      if (localStorage.length > 0) {
-        for (var i = 0; i < localStorage.length; i++) {
-          this.todoItems.push(localStorage.key(i));
-        }
+        this.$emit('removeTodo', todoItem, index);
       }
     }
   }

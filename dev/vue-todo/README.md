@@ -17,6 +17,15 @@ npm run build
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+## 2018.05.11
+
+* 문제점 해결
+* 뷰 애니메이션 추가 
+* Modal 추가
+
+> 참고: keyboard 이벤트들은 input이 없으면 동작하지 않는다. tabindex="0"을 추가하면 동작, 하지만 Modal에 focus가 먼저 가야하는 문제점도 있다.   
+> 출처: [stackoverflow](https://stackoverflow.com/questions/49042667/vuejs-keyup-esc-on-div-element-is-not-working?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa)
+
 ## 2018.05.10
 
 기본 기능과 템플릿 추가
