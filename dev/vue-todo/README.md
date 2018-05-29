@@ -17,6 +17,10 @@ npm run build
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+## 2018.05.29
+
+* Todo 수정 기능 추가
+
 ## 2018.05.11
 
 * 문제점 해결

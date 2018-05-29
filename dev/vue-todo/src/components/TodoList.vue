@@ -1,10 +1,11 @@
 <template>
   <section>
     <transition-group name="list" tag="ul">
-      <li v-for="(todoItem, index) in propsdata" class="shadow" v-bind:key="index">
-        <i class="checkBtn fa fa-check" aria-hidden="true"></i>
-        {{ todoItem }}
-        <span class="removeBtn" type="button" v-on:click="removeTodo(todoItem, index)">
+      <li v-for="(todoItem, index) in propsTodos" class="shadow" v-bind:key="index">
+        <i class="checkBtn fa fa-check" aria-hidden="true" v-bind:chk="todoItem.isComplete" v-on:click="toggleTodo(index)"></i>
+        <span class="text" v-on:dblclick="editTodo($event,index)" v-show="index != propsEditMode" >{{ todoItem.value }}</span>
+        <input type="text" class="edit-input" v-show="index == propsEditMode" v-bind:value="todoItem.value" v-on:keydown.enter="compTodo($event, index)"/>
+        <span class="removeBtn" type="button" v-on:click="removeTodo(todoItem.value, index)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </span>
       </li>
@@ -14,10 +15,22 @@
 
 <script>
   export default {
-    props: ['propsdata'],
+    props: ['propsTodos', 'propsEditMode'],
     methods: {
-      removeTodo(todoItem, index) {
-        this.$emit('removeTodo', todoItem, index);
+      removeTodo(key, index) {
+        this.$emit('removeTodo', key, index);
+      },
+      toggleTodo(index){
+        this.$emit('toggleTodo', index);
+      },
+      editTodo(event, index){
+        this.$emit('editTodo', index);
+        setTimeout(()=>{
+          event.target.nextElementSibling.focus()
+        },100)
+      },
+      compTodo(event, index){
+        this.$emit('compTodo', index, event.target.value);
       }
     }
   }
@@ -42,8 +55,14 @@
   }
   .checkBtn {
     line-height: 45px;
-    color: #62acde;
+    color: #7A7E81;
     margin-right: 5px;
+  }
+  .checkBtn[chk="true"]{
+    color: #62acde;
+  }
+  .checkBtn[chk="true"] + .text{
+    text-decoration-line: line-through;
   }
   .removeBtn {
     margin-left: auto;
