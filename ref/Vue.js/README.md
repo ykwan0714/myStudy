@@ -1,5 +1,3 @@
-해당 문서는 Vue.js 공식 가이드 문서를 참고하여 요약해 놓은 문서입니다.  
-자세한 내용은 [Vue.js 배우기](https://kr.vuejs.org/v2/guide/) 참고 하세요.
 
 # Vue.js
 
@@ -13,7 +11,7 @@
 
 ## Vue 인스턴스
 
-모든 Vue 앱은 `Vue` 함수로 새 Vue 인스턴스를 만드는 것 부터 시작한다.
+모든 Vue 앱은 `Vue` 함수로 새 Vue 인스턴스를 만드는 것 부터 시작한다. Vue 인스턴스는 뷰로 화면을 개발하기 위해 필수적으로 생성해야하는 기본 단위이다.
 
 ```html
 <div id="example">
@@ -39,6 +37,65 @@ var app = new Vue({
 ```
 
 Vue 인스턴스를 생성할 때에는 options 객체를 전달해야 한다. 전체 옵션 목록은 [이곳](https://kr.vuejs.org/v2/api)에서 확인할 수 있다.
+
+### Vue 인스턴스의 라이프 사이클
+
+인스턴스의 상태에 따라 호출 할 수 있는 속성을 라이프 사이클 속성이라고 한다. 라이프 사이클 속성에는 created, beforeCreate, beforeMount, mounted 등등 8개가 있다.
+
+![lifecycle](./lifecycle.jpeg)
+
+1. beforeCreate   
+	인스턴스가 생성되고 나서 가장 처음으로 실행되는 라이프 사이클 단계. 이 때는 뷰 인스턴스의 data 와 methods 속성이 아직 정의되어 있지 않고, 돔과 같은 화면 요소에도 접근할 수 없다. 
+
+2. created   
+	이 단계에는 data 속성과 methods 속성이 정의되었기 때문에 두 속성값에 접근하여 로직을 실행할 수 있다. 하지만 아직 화면 요소에 인스턴스가 부착되기 전이기 때문에 template 속성에 정의된 돔 요소에 접근할 수 없다.
+
+3. beforeMount   
+	render() 함수가 호출되기 직전의 단계입니다. created 이후에 template 속성에 지정한 마크업 속성을 render() 함수로 변환한 후 el 속성에 지정한 화면 요소에 인스턴스를 부착하기 직전 호출된다.
+	
+4. mounted   
+	el 속성에서 지정한 화면 요소에 인스턴스가 부착되고 난 후 호출되는 단계이다. 다만, 돔에 인스턴스가 부착되자마자 바로 호출되기 떄문에 하위 컴포넌트나 외부 라이브러리에 의해 추가된 화면 요소들이 최종 HTML 코드로 변환되는 시점과 다를 수 있다.
+	
+5. beforeUpdate   
+	el 속성에서 지정한 화면 요소에 인스턴스가 부착되고 난 후에 인스턴스 속성들이 화면에 치횐된다. 치환된 값을 $watch 속성으로 감시한다. 이러한 작업을 데이터 관찰이라고 한다.    
+	이렇게 관찰하고 있는 데이터들이 변경되면 가상 돔을 이용해 화면에 다시 그려야 한다. 이 때, 그리기 직전 호출되는 단계가 beforeUpdate 이다. 만약 여기에 값을 변경하는 로직을 넣더라도 화면이 다시 그려지지는 않는다.
+
+6. updated   
+	데이터가 변경되고 나서 가상 돔으로 다시 화면을 그리고 나면 실행되는 단계. 이 단계에서 데이터 값을 변경하면 무한 루프에 빠질 수 있기 때문에 값을 변경하려면 computed, watch와 같은 속성을 사용해야 한다. 따라서 데이터 값을 갱신하는 로직은 가급적 beforeUpdate에 추가하고, updated에서는 변경 데이터의 화면 요소(돔)와 관련된 로직을 추가하는 것이 좋다.
+
+7. beforeDestroy   
+	뷰 인스턴스가 파괴되기 직전에 호출되는 단계이다. 이 단계에서는 아직 인스턴스에 접근 가능하며 뷰 인스턴스의 데이터를 삭제하기에 좋은 단계이다.
+
+
+8. destroyed   
+	뷰 인스턴스가 파괴되고 난 후 호출되는 단계이다. 뷰 인스턴스에 정의한 모든 속성이 제거되고 하위에 선언한 인스턴스들 또한 모두 파괴된다.
+
+```html
+<div id="example">
+  <span>메시지: {{ message }}</span>
+</div>
+
+```
+```javascript
+var app = new Vue({
+  el: '#example',
+  data: {
+    message: '안녕하세요'
+  },
+  beforeCreate: function () {
+    console.log('beforeCreate');
+  },
+  created: function () {
+    console.log('created');
+  },
+  mounted: function () {
+    console.log('mounted');
+  },
+  updated: function () {
+    console.log('updated');
+  }
+})
+```
 
 ## 템플릿 문법
 
@@ -663,7 +720,7 @@ new Vue({
 
 모든 컴포넌트 인스턴스는 자체 스코프가 존재한다. 즉 자식 컴포넌트의 템플릿에서 부모 데이터를 직접 참조할 수 없다. 부모 컴포넌트의 데이터는 **props** 옵션을 사용하여 자식 컴포넌트로 전달하여 사용해야한다. 하위 컴포넌트에서는 `props` 옵션을 사용하여 받을 props를 선언해줘야한다.
 
-![props](https://github.com/ykwan0714/myStudy/blob/master/ref/Vue.js/props-events.png?raw=true)
+![props](./props-events.png)
  
 Vue.js에서 부모-자식 컴포넌트 관계는 **props는 아래**로 **events는 위로** 전달된다. 부모는 **props**를 통해 자식에게 데이터를 전달하고, 자식은 **events**를 통해 부모에게 메시지를 보낸다.
 
@@ -779,3 +836,9 @@ new Vue({
 이벤트 버스를 활용하면 props속성을 이용하지 않고도 원하는 컴포넌트 간에 직접적으로 데이터를 전달할 수 있어서 편리하지만 컴포너넌트가 많아지면 관리가 되지 않는 문제점이 있다. Vuex(뷰엑스)라는 상태관리 도구가 필요하다.
 
 [자세히 보기](https://kr.vuejs.org/v2/guide/components.html)
+
+
+## 참고문헌
+
+* [Vue.js 배우기](https://kr.vuejs.org/v2/guide/)
+* Do it Vue.js 입문
