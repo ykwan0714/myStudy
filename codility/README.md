@@ -11,3 +11,5 @@ FT개발팀의 업무 능률향상을 위한 알고리즘 스터디이다.
 ## 목록
 
 1. [Lesson01: Iterations](./Lesson01)
+2. [Lesson01: Array](./Lesson02)
+3. [Lesson01: Time Complexity](./Lesson03)
