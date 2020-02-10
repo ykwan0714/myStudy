@@ -27,7 +27,7 @@
     "webpack-hot-middleware": "^2.17.1"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.19.2",
     "classnames": "^2.2.5",
     "immutability-helper": "^2.2.2"
   }
