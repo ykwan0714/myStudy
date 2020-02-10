@@ -12,14 +12,14 @@
 
 > 참조: [[공지] 크롬 80 업데이트에 따른 변경사항 및 가이드 안내](https://www.inicis.com/blog/archives/121508) - KG이니시스
 
-![](1580750955-Same-Site Cookie Comparison.png)
+![image](./1580750955-Same-Site Cookie Comparison.png)
 
 웹 페이지 상의 외부 리소스가 사이트 도메인과 일치하지 않는 쿠키에 접근할 때, 이를 `cross-site` 또는 `third party` 컨텍스트라고 한다. 반대로 웹 페이지 상의 리소스가 유저가 접속한 사이트와 일치하는 쿠키에 접근한 경우, 이를 `same-site` 또는 `first-party` 컨텍스트라고 한다.
 
 
 ## SameSite 속성
 
-![](./1580745160-Same-Site Cookie Infographic.png)
+![image](./1580745160-Same-Site Cookie Infographic.png)
 
 크로미움 사이트의 SameSite 속성의 정책을 보면 아래와 같이 요약되어 있다.
 
