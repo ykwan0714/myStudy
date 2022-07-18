@@ -1,0 +1,37 @@
+.com_tit {
+  padding: 100px 0 80px;
+  font-size: 70px;
+  text-align: center;
+}
+.com_txt {
+  max-width: 70%;
+  margin: 0 auto;
+  font-size: 30px;
+  text-align: center;
+}
+
+.sec01 {
+  background: #ddd;
+}
+.sec01 .content {
+  font-size: 170px;
+}
+.sec01 .content .progress {
+  position: fixed;
+  left: 50%;
+  top: 500px;
+  width: 70%;
+  height: 100px;
+  margin-left: -35%;
+  border: 1px solid #222;
+  text-align: center;
+}
+.sec01 .content .progress .bar {
+  display: block;
+  width: 0%;
+  height: 100%;
+  background-color: #111;
+}
+.sec01 .content .progress .txt {
+  font-size: 30px;
+}
