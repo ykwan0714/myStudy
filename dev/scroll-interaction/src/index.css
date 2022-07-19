@@ -1,0 +1,11 @@
+#App > section {
+  margin: 30px;
+  color: #232629;
+}
+#App > section > h1 {
+  font-size: 2em;
+}
+#App > section > ol ol {
+  padding-left: 30px;
+  color:#3b4045;
+}

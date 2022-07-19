@@ -1,0 +1,24 @@
+.com_tit {
+  margin: 100px 0 80px;
+  font-size: 70px;
+  text-align: center;
+}
+.sc_infinity .list:after {
+  clear: both;
+  display: block;
+  content: '';
+}
+.sc_infinity .list li {
+  float: left;
+  width: 25%;
+}
+.sc_infinity .list li figure {
+  padding: 10px;
+}
+.footer {
+  height: 200px;
+  background-color: #ddd;
+}
+.footer p {
+  padding: 50px 20px;
+}
